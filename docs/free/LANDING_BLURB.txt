@@ -1,0 +1,1 @@
+Charter treats human intent as the source of truth: record what was asked, then verify whether the work matched. Free today: held-out verification tasks that dry-run offline, plus open preference-quality research artifacts on Hugging Face that power the engine underneath. Agents will get smarter; goals shouldn’t get fuzzier. Private charter audits — hudson.gouge@projxon.ai.

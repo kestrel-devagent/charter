@@ -6,17 +6,9 @@
     try {
       const raw = localStorage.getItem(STORAGE_KEY) || "";
       if (!raw.trim()) return [];
-      return raw
-        .split("\n")
-        .filter(Boolean)
-        .map(function (line) {
-          try {
-            return JSON.parse(line);
-          } catch (_) {
-            return null;
-          }
-        })
-        .filter(Boolean);
+      return raw.trim().split("\n").map(function (line) {
+        return JSON.parse(line);
+      });
     } catch (_) {
       return [];
     }
@@ -25,8 +17,8 @@
   function appendLog(entry) {
     const line = JSON.stringify(entry);
     const prev = localStorage.getItem(STORAGE_KEY) || "";
-    const next = prev ? prev.replace(/\n?$/, "\n") + line + "\n" : line + "\n";
-    localStorage.setItem(STORAGE_KEY, next);
+    const normalized = (prev ? prev.replace(/\s*$/, "") + "\n" : "") + line + "\n";
+    localStorage.setItem(STORAGE_KEY, normalized);
     return loadLog();
   }
 
@@ -40,7 +32,7 @@
         "Email: " + (data.email || ""),
         "Company / team: " + (data.team || ""),
         "Use case: " + (data.useCase || ""),
-        "Interest: " + (data.interest || "free-tier"),
+        "Interest: " + (data.interest || "free"),
         "When: " + (data.ts || new Date().toISOString()),
         "Source: charter landing",
       ].join("\n")
@@ -62,7 +54,7 @@
         email: data.email || "",
         team: data.team || "",
         use_case: data.useCase || "",
-        interest: data.interest || "free-tier",
+        interest: data.interest || "free",
         source: "charter-landing",
         timestamp: data.ts,
         _template: "table",
@@ -70,9 +62,7 @@
       }),
     });
     if (!res.ok) throw new Error("formsubmit " + res.status);
-    return res.json().catch(function () {
-      return {};
-    });
+    return res.json().catch(function () { return {}; });
   }
 
   function wireWaitlist() {
@@ -87,9 +77,9 @@
         email: String(fd.get("email") || "").trim(),
         team: String(fd.get("team") || "").trim(),
         useCase: String(fd.get("use_case") || "").trim(),
-        interest: String(fd.get("interest") || "free-tier").trim(),
+        interest: String(fd.get("interest") || "free").trim(),
         ts: new Date().toISOString(),
-        source: "charter-landing",
+        product: "charter",
       };
       if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
         msg.className = "msg err";
@@ -111,10 +101,8 @@
 
       msg.className = "msg ok";
       msg.textContent = relayOk
-        ? "You're on the list. Logged as NDJSON and opened mailto to " + CONTACT + "."
-        : "Logged as NDJSON and opened mailto to " +
-          CONTACT +
-          '. If mail did not open, email that address with subject “Charter Waitlist”.';
+        ? "You're on the list. Logged (NDJSON) and opened mailto to " + CONTACT + "."
+        : "Logged as NDJSON locally and opened mailto to " + CONTACT + ". If mail didn’t open, email that address with subject “Charter Waitlist”.";
       form.reset();
     });
   }

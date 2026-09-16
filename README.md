@@ -1,8 +1,7 @@
 # Charter
 
-**Agents get smarter. Your goals shouldn’t get fuzzier.**
-
-Human intent as source of truth. Record what was asked (the charter), enforce it, verify whether work matched.
+**Agents get smarter. Your goals shouldn’t get fuzzier.**  
+Charter locks what you want and checks whether the work matched.
 
 Product by **Charter** · billing by **Kestrel Ops**.
 
@@ -14,28 +13,41 @@ Source: [`docs/`](./docs/) (Pages from `/docs` on `main`).
 
 ## What it is
 
+Human intent as source of truth:
+
 1. **Record** the charter (what was asked)
 2. **Enforce** it while work runs
 3. **Verify** outcomes against the original ask
 
-## What it is not
-
-Not a public pitch for DPO datasets, preference-split tooling, Liftgate, or “Datadog for agents.”
+Verification under the hood — not a training-stack / DPO marketing pitch.
 
 ## Free tier
 
-Placeholder for Asa’s eval / Hub package (link TBD). Waitlist via landing form or `mailto:hudson.gouge@projxon.ai` (subject: `Charter Waitlist`). Signups also append to a browser NDJSON log (exportable).
+Held-out verification tasks (offline dry-run) + open preference-quality research artifacts on Hugging Face.
 
-## Charter Pro
+CTA blurb (locked): see [`docs/free/LANDING_BLURB.txt`](./docs/free/LANDING_BLURB.txt) · pack notes [`docs/free/FREE_TIER.md`](./docs/free/FREE_TIER.md)
 
-**$49/mo** — private charters + verification reports.
+Hub:
+
+- https://huggingface.co/datasets/asaverren/openhands-divergence-dpo-strong
+- https://huggingface.co/asaverren/qwen35-4b-openhands-divergence-dpo
+- https://huggingface.co/datasets/asaverren/openhands-divergence-dpo
+
+## Charter Pro — $49/mo
+
+Private charters + verification reports.
 
 PayPal to `hudson.gouge@projxon.ai` with note **`Charter Pro`**, then email the txn ID to the same address.
+
+## Waitlist
+
+- Mailto: `hudson.gouge@projxon.ai` (subject: `Charter Waitlist`)
+- In-browser NDJSON log (export from landing)
 
 ## Repo layout
 
 ```
-docs/index.html   # landing
-docs/styles.css
-docs/waitlist.js  # mailto + NDJSON waitlist log
+docs/           # GitHub Pages site
+docs/free/      # Free-tier credibility pack (Asa framing)
+README.md
 ```
