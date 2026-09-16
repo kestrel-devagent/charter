@@ -164,11 +164,12 @@
       <span class="pill">Direct product channel</span>
     </div>
     <div class="cta" style="margin-bottom:.5rem" id="stripe">
-      <a class="btn btn-gold" href="/subscribe" id="stripe-checkout-cta">Subscribe with Stripe — $49/mo</a>
+      <a class="btn btn-gold" href="/subscribe?product=charter" id="stripe-checkout-cta">Subscribe with Stripe — $49/mo</a>
     </div>
     <p class="fine" style="opacity:.75">
-      Stripe Checkout — wiring now. Checkout opens via Stripe (no PayPal).
-      When live, this button hits a Checkout Session URL or <code>/subscribe</code>.
+      Stripe Checkout — connect key to go live (no PayPal).
+      When the billing host is up, point this CTA at
+      <code>{PUBLIC_BASE_URL}/subscribe?product=charter</code>.
     </p>
   </section>
 
