@@ -1,24 +1,33 @@
 (function () {
   const CONTACT = "hudson.gouge@projxon.ai";
-  const STORAGE_KEY = "charter_waitlist_log_v1";
+  const STORAGE_KEY = "charter_waitlist_ndjson_v1";
 
   function loadLog() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      const raw = localStorage.getItem(STORAGE_KEY) || "";
+      if (!raw.trim()) return [];
+      return raw
+        .split("\n")
+        .filter(Boolean)
+        .map(function (line) {
+          try {
+            return JSON.parse(line);
+          } catch (_) {
+            return null;
+          }
+        })
+        .filter(Boolean);
     } catch (_) {
       return [];
     }
   }
 
-  function saveLog(entries) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-  }
-
   function appendLog(entry) {
-    const entries = loadLog();
-    entries.push(entry);
-    saveLog(entries);
-    return entries;
+    const line = JSON.stringify(entry);
+    const prev = localStorage.getItem(STORAGE_KEY) || "";
+    const next = prev ? prev.replace(/\n?$/, "\n") + line + "\n" : line + "\n";
+    localStorage.setItem(STORAGE_KEY, next);
+    return loadLog();
   }
 
   function mailtoWaitlist(data) {
@@ -31,7 +40,7 @@
         "Email: " + (data.email || ""),
         "Company / team: " + (data.team || ""),
         "Use case: " + (data.useCase || ""),
-        "Interest: " + (data.interest || "waitlist"),
+        "Interest: " + (data.interest || "free-tier"),
         "When: " + (data.ts || new Date().toISOString()),
         "Source: charter landing",
       ].join("\n")
@@ -40,7 +49,6 @@
   }
 
   async function submitFormSubmit(data) {
-    // Free FormSubmit relay — emails CONTACT; no paid services.
     const endpoint = "https://formsubmit.co/ajax/" + CONTACT;
     const res = await fetch(endpoint, {
       method: "POST",
@@ -54,7 +62,7 @@
         email: data.email || "",
         team: data.team || "",
         use_case: data.useCase || "",
-        interest: data.interest || "waitlist",
+        interest: data.interest || "free-tier",
         source: "charter-landing",
         timestamp: data.ts,
         _template: "table",
@@ -62,7 +70,9 @@
       }),
     });
     if (!res.ok) throw new Error("formsubmit " + res.status);
-    return res.json().catch(function () { return {}; });
+    return res.json().catch(function () {
+      return {};
+    });
   }
 
   function wireWaitlist() {
@@ -77,8 +87,9 @@
         email: String(fd.get("email") || "").trim(),
         team: String(fd.get("team") || "").trim(),
         useCase: String(fd.get("use_case") || "").trim(),
-        interest: String(fd.get("interest") || "waitlist").trim(),
+        interest: String(fd.get("interest") || "free-tier").trim(),
         ts: new Date().toISOString(),
+        source: "charter-landing",
       };
       if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
         msg.className = "msg err";
@@ -96,13 +107,14 @@
         relayOk = false;
       }
 
-      // Always open mailto so the signup is also in your mail client / sent folder.
       window.location.href = mailtoWaitlist(data);
 
       msg.className = "msg ok";
       msg.textContent = relayOk
-        ? "You're on the list. We logged this signup and opened a confirmation email to " + CONTACT + "."
-        : "Logged locally and opened mailto to " + CONTACT + ". If your mail client didn't open, email that address with subject “Charter Waitlist”.";
+        ? "You're on the list. Logged as NDJSON and opened mailto to " + CONTACT + "."
+        : "Logged as NDJSON and opened mailto to " +
+          CONTACT +
+          '. If mail did not open, email that address with subject “Charter Waitlist”.';
       form.reset();
     });
   }
@@ -111,11 +123,11 @@
     const btn = document.getElementById("export-waitlist-log");
     if (!btn) return;
     btn.addEventListener("click", function () {
-      const entries = loadLog();
-      const blob = new Blob([JSON.stringify(entries, null, 2)], { type: "application/json" });
+      const raw = localStorage.getItem(STORAGE_KEY) || "";
+      const blob = new Blob([raw || ""], { type: "application/x-ndjson" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = "charter-waitlist-log.json";
+      a.download = "charter-waitlist.ndjson";
       a.click();
       URL.revokeObjectURL(a.href);
     });
