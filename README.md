@@ -51,3 +51,8 @@ docs/           # GitHub Pages site
 docs/free/      # Free-tier credibility pack (Asa framing)
 README.md
 ```
+
+## Day-one shape (under consideration)
+
+`charter.yml` + GitHub PR status checks — design direction, not a shipped App claim.
+
