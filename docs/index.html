@@ -163,15 +163,12 @@
       <span class="pill">Priority onboarding</span>
       <span class="pill">Direct product channel</span>
     </div>
-    <div class="cta" style="margin-bottom:.5rem">
-      <a class="btn btn-gold"
-         href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&amp;business=hudson.gouge%40projxon.ai&amp;item_name=Charter%20Pro&amp;amount=49.00&amp;currency_code=USD&amp;button_subtype=services&amp;no_shipping=1&amp;rm=1"
-         target="_blank" rel="noopener">Pay $49 via PayPal</a>
-      <a class="btn" href="mailto:hudson.gouge@projxon.ai?subject=Charter%20Pro&amp;body=I%20paid%20%28or%20will%20pay%29%20%2449%2Fmo%20for%20Charter%20Pro.%0APayPal%20txn%20ID%3A%20%0AEmail%20for%20access%3A%20">Email txn ID after pay</a>
+    <div class="cta" style="margin-bottom:.5rem" id="stripe">
+      <a class="btn btn-gold" href="/subscribe" id="stripe-checkout-cta">Subscribe with Stripe — $49/mo</a>
     </div>
-    <p class="fine">
-      PayPal to <code>hudson.gouge@projxon.ai</code> — note must say
-      <code>Charter Pro</code>. Then email the transaction ID to the same address for unlock.
+    <p class="fine" style="opacity:.75">
+      Stripe Checkout — wiring now. Checkout opens via Stripe (no PayPal).
+      When live, this button hits a Checkout Session URL or <code>/subscribe</code>.
     </p>
   </section>
 

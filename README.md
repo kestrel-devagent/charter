@@ -37,7 +37,7 @@ Hub:
 
 Private charters + verification reports.
 
-PayPal to `hudson.gouge@projxon.ai` with note **`Charter Pro`**, then email the txn ID to the same address.
+Stripe Checkout — **$49/mo** (button on landing → `/subscribe` or Checkout Session URL). See `stripe-billing` stub.
 
 ## Waitlist
 
